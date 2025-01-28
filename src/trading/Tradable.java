@@ -5,14 +5,14 @@ import price.Price;
 public interface Tradable {
     String getID();
     int getRemainingVolume();
-    void setCancelledVolume(int newvol);
+    void setCancelledVolume(int newVol);
     int getCancelledVolume();
     void setRemainingVolume(int newVol);
     TradableDTO makeTradableDTO();
     Price getPrice();
     void setFilledVolume(int newVol);
     int getFilledVolume();
-    //BookSide getSide();
+    BookSide getSide();
     String getUser();
     String getProduct();
     int getOriginalVolume();

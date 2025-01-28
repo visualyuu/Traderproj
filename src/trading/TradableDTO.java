@@ -1,5 +1,6 @@
 package trading;
 
-public class TradableDTO {
-
+public record TradableDTO {
+    public TradableDTO() {
+    }
 }
