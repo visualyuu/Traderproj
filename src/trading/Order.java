@@ -149,4 +149,19 @@ public class Order implements Tradable{
     public int getOriginalVolume() {
         return originalVolume;
     }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "user='" + user + '\'' +
+                ", product='" + product + '\'' +
+                ", price=" + price +
+                ", side=" + side +
+                ", originalVolume=" + originalVolume +
+                ", remainingVolume=" + remainingVolume +
+                ", cancelledVolume=" + cancelledVolume +
+                ", filledVolume=" + filledVolume +
+                ", id='" + id + '\'' +
+                '}';
+    }
 }
