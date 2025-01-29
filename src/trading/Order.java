@@ -78,17 +78,20 @@ public class Order implements Tradable{
     }
 
     @Override
-    private void setRemainingVolume(int newVol) {
+    public void setRemainingVolume(int newVol) {
+        //should be private. figure it out.
         this.remainingVolume = newVol;
     }
 
     @Override
-    private void setFilledVolume(int newVol) {
+    public void setFilledVolume(int newVol) {
+        //should be private. figure it out.
         this.filledVolume = newVol;
     }
 
     @Override
-    private void setCancelledVolume(int newVol) {
+    public void setCancelledVolume(int newVol) {
+        //should be private. figure it out.
         this.cancelledVolume = newVol;
     }
 

@@ -3,6 +3,8 @@ import exceptions.*;
 import trading.ProductBook;
 import trading.TradableDTO;
 
+import static trading.BookSide.*;
+
 
 public class Main {
     private static ProductBook productBook;
