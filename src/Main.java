@@ -1,8 +1,6 @@
 import price.*;
 import exceptions.*;
-import trading.ProductBook;
-import trading.TradableDTO;
-
+import trading.*;
 import static trading.BookSide.*;
 
 

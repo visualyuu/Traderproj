@@ -6,6 +6,7 @@ import price.Price;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import regex.RegexStrings;
 
 public class Order implements Tradable{
 
@@ -17,10 +18,9 @@ public class Order implements Tradable{
     private int remainingVolume = originalVolume;
     private  int cancelledVolume = 0;
     private int filledVolume = 0;
-    private String id;
+    private final String id;
 
-    public Order(String user, String product, Price price, BookSide side, int originalVolume,
-                 int remainingVolume, int cancelledVolume, int filledVolume, String id)
+    public Order(String user, String product, Price price, int originalVolume, BookSide side)
             throws InvalidStringException, InvalidPriceException, InvalidSideException, InvalidNumberException {
         setUser(user);
         setProduct(product);
@@ -30,30 +30,14 @@ public class Order implements Tradable{
         setRemainingVolume(remainingVolume);
         setCancelledVolume(cancelledVolume);
         setFilledVolume(filledVolume);
-        setId(id);
+        id  = user+product+price+System.nanoTime();
     }
 
     private void setUser(String user) throws InvalidStringException {
-        Pattern pattern = Pattern.compile("[0-9!@#%^&*.()_{}\\[\\]|\\\\\\s+]");
-        Matcher matcher = pattern.matcher(user);
-
-        if (matcher.find()){
-            throw new InvalidStringException("User cannot contain special characters/numbers/spaces");
-        } else if (user.length() != 3) {
-            throw new InvalidStringException("User length is less than or greater than three");
-        }
-        this.user = user.toUpperCase();
+        this.user = RegexStrings.userTest(user);
     }
     private void setProduct(String product) throws InvalidStringException {
-        Pattern pattern = Pattern.compile("[0-9!@#%^&*()_{}\\[\\]|\\\\\\s+]");
-        Matcher matcher = pattern.matcher(product);
-
-        if (matcher.find()){
-            throw new InvalidStringException("Product name cannot contain special characters/lowercase letters/numbers/spaces");
-        } else if (product.length() > 5) {
-            throw new InvalidStringException("Product name length cannot be greater than five");
-        }
-        this.product = product;
+        this.product = RegexStrings.productTest(product);
     }
 
     private void setPrice(Price price) throws InvalidPriceException{
@@ -79,24 +63,20 @@ public class Order implements Tradable{
 
     @Override
     public void setRemainingVolume(int newVol) {
-        //should be private. figure it out.
+        //should be private(error)
         this.remainingVolume = newVol;
     }
 
     @Override
     public void setFilledVolume(int newVol) {
-        //should be private. figure it out.
+        //should be private(error)
         this.filledVolume = newVol;
     }
 
     @Override
     public void setCancelledVolume(int newVol) {
-        //should be private. figure it out.
+        //should be private(error)
         this.cancelledVolume = newVol;
-    }
-
-    private void setId(String id) {
-        this.id = id;
     }
 
     @Override
@@ -117,7 +97,6 @@ public class Order implements Tradable{
     }
 
 
-
     @Override
     public BookSide getSide() {
         return side;
@@ -125,7 +104,7 @@ public class Order implements Tradable{
 
     @Override
     public TradableDTO makeTradableDTO() {
-        return TradableDTO;
+        return new TradableDTO(this);
     }
 
     @Override
@@ -155,6 +134,7 @@ public class Order implements Tradable{
 
     @Override
     public String toString() {
+        //rewrite according to desc.
         return "Order{" +
                 "user='" + user + '\'' +
                 ", product='" + product + '\'' +
