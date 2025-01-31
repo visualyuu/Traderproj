@@ -213,7 +213,7 @@ public class Main {
         }
     }
 
-    private static TradableDTO addOrder(String user, String price, int volume, GlobalConstants.BookSide side) {
+    private static TradableDTO addOrder(String user, String price, int volume, BookSide side) {
         try {
             return productBook.add(new Order(user, "TGT", PriceFactory.makePrice(price), volume, side));
         } catch (Exception e) {
@@ -222,7 +222,7 @@ public class Main {
         return null;
     }
 
-    private static void cancelOrder(String tradableId, GlobalConstants.BookSide side) {
+    private static void cancelOrder(String tradableId, BookSide side) {
         try {
             productBook.cancel(side, tradableId);
         } catch (Exception e) {

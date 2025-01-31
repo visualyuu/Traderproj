@@ -10,10 +10,10 @@ import regex.RegexStrings;
 
 public class Order implements Tradable{
 
-    private String user;
-    private String product;
-    private Price price;
-    private BookSide side;
+    private final String user;
+    private final String product;
+    private final Price price;
+    private final BookSide side;
     private int originalVolume;
     private int remainingVolume = originalVolume;
     private  int cancelledVolume = 0;
@@ -22,60 +22,50 @@ public class Order implements Tradable{
 
     public Order(String user, String product, Price price, int originalVolume, BookSide side)
             throws InvalidStringException, InvalidPriceException, InvalidSideException, InvalidNumberException {
-        setUser(user);
-        setProduct(product);
-        setPrice(price);
-        setSide(side);
-        setOriginalVolume(originalVolume);
+        this.user = RegexStrings.userTest(user);
+        this.product = RegexStrings.productTest(product);
+        this.price = setPrice(price);
+        this.side= setSide(side);
+        this.originalVolume = setOriginalVolume(originalVolume);
         setRemainingVolume(remainingVolume);
         setCancelledVolume(cancelledVolume);
         setFilledVolume(filledVolume);
         id  = user+product+price+System.nanoTime();
     }
 
-    private void setUser(String user) throws InvalidStringException {
-        this.user = RegexStrings.userTest(user);
-    }
-    private void setProduct(String product) throws InvalidStringException {
-        this.product = RegexStrings.productTest(product);
-    }
-
-    private void setPrice(Price price) throws InvalidPriceException{
+    private Price setPrice(Price price) throws InvalidPriceException{
         if (price == null){
             throw new InvalidPriceException("Price cannot be null");
         }
-        this.price = price;
+        return price;
     }
 
-    private void setSide(BookSide side) throws InvalidSideException {
+    private BookSide setSide(BookSide side) throws InvalidSideException {
         if (side == null){
             throw new InvalidSideException("Side cannot be null");
         }
-        this.side = side;
+        return side;
     }
 
-    private void setOriginalVolume(int originalVolume) throws InvalidNumberException {
+    private int setOriginalVolume(int originalVolume) throws InvalidNumberException {
         if (originalVolume < 0 || originalVolume > 10000){
             throw new InvalidNumberException("Original volume cannot be less than 0 or greater than 10,000");
         }
-        this.originalVolume = originalVolume;
+        return originalVolume;
     }
 
     @Override
     public void setRemainingVolume(int newVol) {
-        //should be private(error)
         this.remainingVolume = newVol;
     }
 
     @Override
     public void setFilledVolume(int newVol) {
-        //should be private(error)
         this.filledVolume = newVol;
     }
 
     @Override
     public void setCancelledVolume(int newVol) {
-        //should be private(error)
         this.cancelledVolume = newVol;
     }
 
