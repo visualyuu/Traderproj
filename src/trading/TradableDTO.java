@@ -2,6 +2,8 @@ package trading;
 
 import price.Price;
 
+//JDK HAS TO BE 16+ FOR RECORDS TO WORK
+
 public record TradableDTO(String user, String product, Price price,
                           BookSide side, int originalVolume, int remainingVolume,
                           int cancelledVolume, int filledVolume, String tradableId) {
