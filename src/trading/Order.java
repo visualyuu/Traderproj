@@ -14,8 +14,8 @@ public class Order implements Tradable{
     private final String product;
     private final Price price;
     private final BookSide side;
-    private int originalVolume;
-    private int remainingVolume = originalVolume;
+    private final int originalVolume;
+    private int remainingVolume;
     private  int cancelledVolume = 0;
     private int filledVolume = 0;
     private final String id;
@@ -27,7 +27,7 @@ public class Order implements Tradable{
         this.price = setPrice(price);
         this.side= setSide(side);
         this.originalVolume = setOriginalVolume(originalVolume);
-        setRemainingVolume(remainingVolume);
+        setRemainingVolume(originalVolume);
         setCancelledVolume(cancelledVolume);
         setFilledVolume(filledVolume);
         id  = user+product+price+System.nanoTime();
@@ -124,17 +124,10 @@ public class Order implements Tradable{
 
     @Override
     public String toString() {
-        //rewrite according to desc.
-        return "Order{" +
-                "user='" + user + '\'' +
-                ", product='" + product + '\'' +
-                ", price=" + price +
-                ", side=" + side +
-                ", originalVolume=" + originalVolume +
-                ", remainingVolume=" + remainingVolume +
-                ", cancelledVolume=" + cancelledVolume +
-                ", filledVolume=" + filledVolume +
-                ", id='" + id + '\'' +
-                '}';
+        //done
+        return getUser() +" "+ getSide() + " order: " + getProduct() + " at " + getPrice() +","+
+                "Orig Vol: " + getOriginalVolume() +", Rem Vol" + getRemainingVolume()+
+                ", Fill Vol: " + getFilledVolume()+", CXL Vol: "+getCancelledVolume()+
+                ", ID: "+ getID();
     }
 }

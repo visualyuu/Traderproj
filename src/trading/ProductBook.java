@@ -12,13 +12,21 @@ public class ProductBook {
     private final ProductBookSide sellSide;
 
     public ProductBook(String product) throws InvalidStringException, InvalidSideException {
-        this.product = RegexStrings.productTest(product);
+        this.product = setProduct(product);
         this.buySide = new ProductBookSide(BookSide.BUY);
         this.sellSide = new ProductBookSide(BookSide.SELL);
     }
 
-    public TradableDTO add(Tradable t) throws InvalidTradableException, InvalidSideException, InvalidPriceException {
-        System.out.println("**ADD" + t );
+    private String setProduct(String product) throws InvalidStringException {
+        if (product.isEmpty()){
+            throw new InvalidStringException("No empty products");
+        }
+        return RegexStrings.productTest(product);
+    }
+
+
+    public TradableDTO add(Tradable t) throws InvalidTradableException, InvalidPriceException {
+        System.out.println("**ADD " + t );
         if(t== null){
             throw new InvalidTradableException("Cannot have a null tradable");
         }
@@ -32,7 +40,7 @@ public class ProductBook {
         return dto;
     }
 
-    public TradableDTO[] add(Quote qte) throws InvalidQuoteException,InvalidPriceException {
+    public TradableDTO[] add(Quote qte) throws InvalidQuoteException, InvalidPriceException, InvalidStringException {
         if(qte ==  null){
             throw new InvalidQuoteException("Quote cannot be null");
         }
@@ -43,7 +51,10 @@ public class ProductBook {
         return new TradableDTO[]{dtoBuy,dtoSell};
     }
 
-    public TradableDTO cancel(BookSide side, String orderId){
+    public TradableDTO cancel(BookSide side, String orderId) throws InvalidStringException {
+        if (orderId ==  null){
+            throw new InvalidStringException("Order Id cannot be empty");
+        }
         if(side ==  BookSide.BUY){
             return buySide.cancel(orderId);
         }else{
@@ -51,7 +62,10 @@ public class ProductBook {
         }
     }
 
-    public TradableDTO[] removeQuotesForUser(String userName){
+    public TradableDTO[] removeQuotesForUser(String userName) throws InvalidStringException {
+        if (userName ==  null){
+            throw new InvalidStringException("User name cannot be empty");
+        }
         TradableDTO dtoBuy = buySide.removeQuotesForUser(userName);
         TradableDTO dtoSell = sellSide.removeQuotesForUser(userName);
         return new TradableDTO[]{dtoBuy,dtoSell};
@@ -92,10 +106,9 @@ public class ProductBook {
 
     @Override
     public String toString() {
-        return "ProductBook{" +
-                "product='" + product + '\'' +
-                ", buySide=" + buySide +
-                ", sellSide=" + sellSide +
-                '}';
+        return "Product:" + product + '\n' +
+                "Side: BUY" +"\n"+ buySide.toString() +'\n'+
+                "Side: SELL " +"\n"+
+                sellSide.toString();
     }
 }

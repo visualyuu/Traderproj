@@ -70,18 +70,18 @@ public class QuoteSide implements Tradable{
 
     @Override
     public String getID() {
-        return null;
+        return id;
     }
 
     @Override
     public int getRemainingVolume() {
-        return 0;
+        return remainingVolume;
     }
 
 
     @Override
     public int getCancelledVolume() {
-        return 0;
+        return cancelledVolume;
     }
 
     @Override
@@ -91,48 +91,41 @@ public class QuoteSide implements Tradable{
 
     @Override
     public Price getPrice() {
-        return null;
+        return price;
     }
 
 
     @Override
     public int getFilledVolume() {
-        return 0;
+        return filledVolume;
     }
 
     @Override
     public BookSide getSide() {
-        return null;
+        return side;
     }
 
     @Override
     public String getUser() {
-        return null;
+        return user;
     }
 
     @Override
     public String getProduct() {
-        return null;
+        return product;
     }
 
     @Override
     public int getOriginalVolume() {
-        return 0;
+        return originalVolume;
     }
 
     @Override
     public String toString() {
-        //change
-        return "QuoteSide{" +
-                "user='" + user + '\'' +
-                ", product='" + product + '\'' +
-                ", price=" + price +
-                ", side=" + side +
-                ", originalVolume=" + originalVolume +
-                ", remainingVolume=" + remainingVolume +
-                ", cancelledVolume=" + cancelledVolume +
-                ", filledVolume=" + filledVolume +
-                ", id='" + id + '\'' +
-                '}';
+        //Finished
+        return getUser() +" "+ getSide() + " Quote: " + getProduct() + " at " + getPrice() +","+
+                "Orig Vol: " + getOriginalVolume() +", Rem Vol" + getRemainingVolume()+
+                ", Fill Vol: " + getFilledVolume()+", CXL Vol: "+getCancelledVolume()+
+                ", ID: "+ getID();
     }
 }

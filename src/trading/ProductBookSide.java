@@ -42,7 +42,7 @@ public class ProductBookSide {
             ArrayList<Tradable> list = bookEntries.get(k);
             for (Tradable t : list){
                 if(t.getID().equals(tradableId)){
-                    System.out.println("**CANCEL"+t);
+                    System.out.println("**CANCEL "+t);
                     list.remove(t);
                     t.setCancelledVolume(t.getCancelledVolume() + t.getRemainingVolume());
                     t.setRemainingVolume(0);
@@ -76,10 +76,16 @@ public class ProductBookSide {
     }
 
     public Price topOfBookPrice(){
+        if (bookEntries.isEmpty()){
+            return null;
+        }
         return bookEntries.firstKey();
     }
 
     public int topOfBookVolume(){
+        if (bookEntries.isEmpty()){
+            return 0;
+        }
         int sum = 0;
         ArrayList<Tradable> qlist = bookEntries.get(topOfBookPrice());
         for(Tradable t: qlist){
@@ -122,10 +128,9 @@ public class ProductBookSide {
 
     @Override
     public String toString() {
-        //fix
-        return "ProductBookSide{" +
-                "side=" + side +
-                ", bookEntries=" + bookEntries +
-                '}';
+        if (this.bookEntries.isEmpty()){
+            return "<Empty>";
+        }
+        return bookEntries.toString();
     }
 }
