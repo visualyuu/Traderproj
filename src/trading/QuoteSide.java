@@ -12,10 +12,10 @@ public class QuoteSide implements Tradable{
     private final String product;
     private final Price price;
     private final BookSide side;
-    private int originalVolume;
-    private int remainingVolume = originalVolume;
-    private  int cancelledVolume = 0;
-    private int filledVolume = 0;
+    private final int originalVolume;
+    private int remainingVolume;
+    private  int cancelledVolume;
+    private int filledVolume;
     private final String id;
 
     public QuoteSide(String user, String product, Price price, int originalVolume,BookSide side)
@@ -25,7 +25,7 @@ public class QuoteSide implements Tradable{
         this.price = setPrice(price);
         this.side = setSide(side);
         this.originalVolume = setOriginalVolume(originalVolume);
-        setRemainingVolume(remainingVolume);
+        setRemainingVolume(originalVolume);
         setCancelledVolume(cancelledVolume);
         setFilledVolume(filledVolume);
         id  = user+product+price+System.nanoTime();

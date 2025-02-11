@@ -13,4 +13,18 @@ public record TradableDTO(String user, String product, Price price,
                 tradable.getCancelledVolume(), tradable.getFilledVolume(), tradable.getID());
     }
 
+    @Override
+    public String toString() {
+        return "TradableDTO{" +
+                "user='" + user + '\'' +
+                ", product='" + product + '\'' +
+                ", price=" + price +
+                ", side=" + side +
+                ", originalVolume=" + originalVolume +
+                ", remainingVolume=" + remainingVolume +
+                ", cancelledVolume=" + cancelledVolume +
+                ", filledVolume=" + filledVolume +
+                ", tradableId='" + tradableId + '\'' +
+                '}';
+    }
 }

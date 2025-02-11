@@ -89,7 +89,7 @@ public class ProductBookSide {
         int sum = 0;
         ArrayList<Tradable> qlist = bookEntries.get(topOfBookPrice());
         for(Tradable t: qlist){
-            sum += t.getRemainingVolume();
+            sum = sum + t.getRemainingVolume();
         }
         return sum;
 

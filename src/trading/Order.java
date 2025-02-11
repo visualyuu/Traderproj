@@ -16,8 +16,8 @@ public class Order implements Tradable{
     private final BookSide side;
     private final int originalVolume;
     private int remainingVolume;
-    private  int cancelledVolume = 0;
-    private int filledVolume = 0;
+    private  int cancelledVolume;
+    private int filledVolume;
     private final String id;
 
     public Order(String user, String product, Price price, int originalVolume, BookSide side)
@@ -128,6 +128,6 @@ public class Order implements Tradable{
         return getUser() +" "+ getSide() + " order: " + getProduct() + " at " + getPrice() +","+
                 "Orig Vol: " + getOriginalVolume() +", Rem Vol" + getRemainingVolume()+
                 ", Fill Vol: " + getFilledVolume()+", CXL Vol: "+getCancelledVolume()+
-                ", ID: "+ getID();
+                ", ID: "+ getID()+"\n";
     }
 }

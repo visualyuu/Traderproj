@@ -77,7 +77,10 @@ public class ProductBook {
         if(pSell == null || pBuy == null){
             return;
         }
-        int totalToTrade = Math.max(buySide.topOfBookVolume(), sellSide.topOfBookVolume());
+        int topVolBuy =buySide.topOfBookVolume();
+        int topVolSell = sellSide.topOfBookVolume();
+
+        int totalToTrade = Math.max(topVolBuy, topVolSell);
         while (totalToTrade > 0){
             pSell = sellSide.topOfBookPrice();
             pBuy = buySide.topOfBookPrice();
@@ -95,20 +98,26 @@ public class ProductBook {
 
     }
 
-    public String getTopOfBookString(BookSide side){
-        if (side.equals(BookSide.BUY)){
-            return "Top of BUY book: $" + buySide.topOfBookPrice() + "x" + buySide.topOfBookVolume();
-        }else{
-            return "Top of BUY book: $" + sellSide.topOfBookPrice() + "x" + sellSide.topOfBookVolume();
+    public String getTopOfBookString(BookSide side) {
+        if (side.equals(BookSide.BUY)) {
+            if (buySide.topOfBookPrice() == null) {
+                return "Top of BUY book: $0.00 x " + buySide.topOfBookVolume();
+            }
+            return "Top of BUY book: " + buySide.topOfBookPrice() + " x " + buySide.topOfBookVolume();
+        } else {
+            if (sellSide.topOfBookPrice() == null) {
+                return "Top of SELL book: $0.00 x " + sellSide.topOfBookVolume();
+            }
+            return "Top of SELL book: " + sellSide.topOfBookPrice() + " x " + sellSide.topOfBookVolume();
+        }
+    }
+
+        @Override
+        public String toString () {
+            return "Product:" + product + '\n' +
+                    "Side: BUY" + "\n" + buySide.toString() + '\n' +
+                    "Side: SELL " + "\n" +
+                    sellSide.toString() + "\n";
         }
 
-    }
-
-    @Override
-    public String toString() {
-        return "Product:" + product + '\n' +
-                "Side: BUY" +"\n"+ buySide.toString() +'\n'+
-                "Side: SELL " +"\n"+
-                sellSide.toString();
-    }
 }
