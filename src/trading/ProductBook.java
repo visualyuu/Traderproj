@@ -26,7 +26,7 @@ public class ProductBook {
 
 
     public TradableDTO add(Tradable t) throws InvalidTradableException, InvalidPriceException {
-        System.out.println("**ADD " + t );
+        System.out.println("**ADD " + t +"\n");
         if(t== null){
             throw new InvalidTradableException("Cannot have a null tradable");
         }
@@ -48,6 +48,8 @@ public class ProductBook {
         TradableDTO dtoBuy= buySide.add(qte.getQuoteSide(BookSide.BUY));
         TradableDTO dtoSell= sellSide.add(qte.getQuoteSide(BookSide.SELL));
         tryTrade();
+        System.out.println("**ADD " +  qte.getQuoteSide(BookSide.BUY) +"\n");
+        System.out.println("**ADD " +  qte.getQuoteSide(BookSide.SELL)+"\n");
         return new TradableDTO[]{dtoBuy,dtoSell};
     }
 
@@ -90,8 +92,8 @@ public class ProductBook {
             int buyVol = buySide.topOfBookVolume();
             int sellVol = sellSide.topOfBookVolume();
             int toTrade = Math.min(buyVol, sellVol);
-            buySide.tradeOut(pBuy,buyVol);
-            sellSide.tradeOut(pSell,sellVol);
+            buySide.tradeOut(pBuy,toTrade);
+            sellSide.tradeOut(pSell,toTrade);
             totalToTrade = totalToTrade-toTrade;
 
         }
@@ -117,7 +119,7 @@ public class ProductBook {
             return "Product:" + product + '\n' +
                     "Side: BUY" + "\n" + buySide.toString() + '\n' +
                     "Side: SELL " + "\n" +
-                    sellSide.toString() + "\n";
+                    sellSide.toString();
         }
 
 }

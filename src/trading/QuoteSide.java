@@ -123,8 +123,8 @@ public class QuoteSide implements Tradable{
     @Override
     public String toString() {
         //Finished
-        return getUser() +" "+ getSide() + " Quote: " + getProduct() + " at " + getPrice() +","+
-                "Orig Vol: " + getOriginalVolume() +", Rem Vol" + getRemainingVolume()+
+        return getUser() +" "+ getSide() + " Quote: " + getProduct() + " at " + getPrice() +", "+
+                "Orig Vol: " + getOriginalVolume() +", Rem Vol: " + getRemainingVolume()+
                 ", Fill Vol: " + getFilledVolume()+", CXL Vol: "+getCancelledVolume()+
                 ", ID: "+ getID();
     }

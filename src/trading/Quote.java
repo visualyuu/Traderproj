@@ -36,4 +36,5 @@ public class Quote {
     public String getSymbol() {
         return product;
     }
+
 }

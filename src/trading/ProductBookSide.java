@@ -42,7 +42,7 @@ public class ProductBookSide {
             ArrayList<Tradable> list = bookEntries.get(k);
             for (Tradable t : list){
                 if(t.getID().equals(tradableId)){
-                    System.out.println("**CANCEL "+t);
+                    System.out.println("**CANCEL "+t+"\n");
                     list.remove(t);
                     t.setCancelledVolume(t.getCancelledVolume() + t.getRemainingVolume());
                     t.setRemainingVolume(0);
@@ -98,29 +98,30 @@ public class ProductBookSide {
         Price top = topOfBookPrice();
         if (top == null){
             return;
-        } else if (!top.greaterThan(price)) {
+        } else if (top.greaterThan(price)) {
             return;
-
         }
+
         ArrayList<Tradable> list = bookEntries.get(top);
         int sum = topOfBookVolume();
+
         if (vol >= sum){
             for(Tradable t : list){
                 int rv = t.getRemainingVolume();
                 t.setFilledVolume(t.getOriginalVolume());
                 t.setRemainingVolume(0);
-                System.out.println("FULL FILL");
+                System.out.println("   FULL FILL: ("+ side + " " +t.getFilledVolume()+") "+ t);
             }
-            bookEntries.remove(top);;
-        }else{
-            int remainder =  vol;
-            for(Tradable t : list){
-                double ratio = t.getRemainingVolume() % vol;
-                int toTrade = (int) Math.ceil(vol*ratio);
-                toTrade = Math.min(toTrade,remainder);
-                t.setFilledVolume(t.getFilledVolume()+toTrade);
-                t.setRemainingVolume(t.getRemainingVolume()-toTrade);
-                System.out.println("PARTIAL FILL");
+            bookEntries.remove(top,list);
+        }else {
+            int remainder = vol;
+            for (Tradable t : list) {
+                double ratio = (double) t.getRemainingVolume() / sum;
+                int toTrade = (int) Math.ceil(vol * ratio);
+                toTrade = Math.min(toTrade, remainder);
+                t.setFilledVolume(t.getFilledVolume() + toTrade);
+                t.setRemainingVolume(t.getRemainingVolume() - toTrade);
+                System.out.println("   PARTIAL FILL: ("+ side + " " +t.getFilledVolume()+") "+ t);
                 remainder = remainder - toTrade;
             }
         }
@@ -129,8 +130,16 @@ public class ProductBookSide {
     @Override
     public String toString() {
         if (this.bookEntries.isEmpty()){
-            return "<Empty>";
+            return "   <Empty>";
         }
-        return bookEntries.toString();
+
+        StringBuilder finalStr = new StringBuilder();
+        for (Map.Entry<Price, ArrayList<Tradable>> entry : bookEntries.entrySet()) {
+            finalStr.append("   ").append(entry.getKey()).append(":\n");
+            for (Tradable item : entry.getValue()) {
+                finalStr.append("        ").append(item).append("\n");
+            }
+        }
+        return finalStr.toString();
     }
 }
