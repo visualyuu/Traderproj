@@ -2,12 +2,19 @@ package price;
 
 import exceptions.InvalidPriceException;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public abstract class PriceFactory {
+    //edited for flyweight implementation 2/17
+    private static HashMap<Integer, Price> prices = new HashMap<>();
     public static Price makePrice (int value){
-        return new Price(value);
+        if(!prices.containsKey(value)){
+            prices.put(value, new Price(value));;
+        }
+        return prices.get(value);
     }
 
     public static Price makePrice(String stringValueIn) throws InvalidPriceException {
@@ -60,6 +67,8 @@ public abstract class PriceFactory {
         }
 
         String result = stringValueIn.replaceAll("[$.,]", "");
-        return new Price(Integer.parseInt(result));
+
+        return makePrice(Integer.parseInt(result));
+        //make int from str, pass into fweight check
     }
 }

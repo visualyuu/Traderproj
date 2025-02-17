@@ -111,7 +111,7 @@ public class ProductBookSide {
                 t.setRemainingVolume(0);
                 System.out.println("FULL FILL");
             }
-            bookEntries.remove(top);;
+            bookEntries.remove(top);
         }else{
             int remainder =  vol;
             for(Tradable t : list){
