@@ -3,6 +3,9 @@ import price.*;
 import trading.*;
 import userclasses.*;
 
+import static trading.BookSide.BUY;
+import static trading.BookSide.SELL;
+
 public class Main {
 
     public static void main(String[] args) {

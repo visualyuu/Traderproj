@@ -5,7 +5,9 @@ import regex.RegexStrings;
 import trading.TradableDTO;
 import java.util.HashMap;
 
-public class User {
+
+ class User {
+     //package visible
     private String userId;
     private HashMap<String, TradableDTO> tradables;
     //id, tradabledto
