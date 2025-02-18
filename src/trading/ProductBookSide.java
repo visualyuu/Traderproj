@@ -1,8 +1,10 @@
 package trading;
 
+import exceptions.DataValidationException;
 import exceptions.InvalidPriceException;
 import exceptions.InvalidSideException;
 import price.Price;
+import userclasses.UserManager;
 
 import java.util.ArrayList;
 import java.util.*;
@@ -27,16 +29,17 @@ public class ProductBookSide {
         return side;
     }
 
-    public TradableDTO add(Tradable o){
+    public TradableDTO add(Tradable o) throws DataValidationException {
         Price price = o.getPrice();
         if(!bookEntries.containsKey(price)){
             bookEntries.put(price,new ArrayList<>());
         }
         bookEntries.get(price).add(o);
+        UserManager.getInstance().updateTradable(o.getID(), o.makeTradableDTO());
         return new TradableDTO(o);
     }
 
-    public  TradableDTO cancel(String tradableId){
+    public  TradableDTO cancel(String tradableId) throws DataValidationException {
         Set<Price> keySet = bookEntries.keySet();
         for(Price k : keySet){
             ArrayList<Tradable> list = bookEntries.get(k);
@@ -49,6 +52,7 @@ public class ProductBookSide {
                     if(list.isEmpty()){
                         bookEntries.remove(k,list);;
                     }
+                    UserManager.getInstance().updateTradable(t.getID(), t.makeTradableDTO());
                     return new TradableDTO(t);
                 }
             }
@@ -57,7 +61,7 @@ public class ProductBookSide {
         return null;
     }
 
-    public TradableDTO removeQuotesForUser(String userName){
+    public TradableDTO removeQuotesForUser(String userName) throws DataValidationException {
         Set<Price> keySet = bookEntries.keySet();
         for(Price k : keySet) {
             ArrayList<Tradable> qlist = bookEntries.get(k);
@@ -67,6 +71,7 @@ public class ProductBookSide {
                     if(qlist.isEmpty()){
                         bookEntries.remove(k,qlist);
                     }
+                    UserManager.getInstance().updateTradable(t.getID(), t.makeTradableDTO());
                     return cDTO;
                 }
             }
@@ -94,11 +99,11 @@ public class ProductBookSide {
         return sum;
 
     }
-    public void tradeOut(Price price, int vol) throws InvalidPriceException {
+    public void tradeOut(Price price, int vol) throws InvalidPriceException, DataValidationException {
         Price top = topOfBookPrice();
         if (top == null){
             return;
-        } else if (!top.greaterThan(price)) {
+        } else if (top.greaterThan(price)) {
             return;
 
         }
@@ -109,19 +114,21 @@ public class ProductBookSide {
                 int rv = t.getRemainingVolume();
                 t.setFilledVolume(t.getOriginalVolume());
                 t.setRemainingVolume(0);
-                System.out.println("FULL FILL");
+                System.out.println("   FULL FILL: ("+ side + " " +t.getFilledVolume()+") "+ t);
+                UserManager.getInstance().updateTradable(t.getID(), t.makeTradableDTO());
             }
             bookEntries.remove(top);
         }else{
             int remainder =  vol;
             for(Tradable t : list){
-                double ratio = t.getRemainingVolume() % vol;
+                double ratio = (double) t.getRemainingVolume() / vol;
                 int toTrade = (int) Math.ceil(vol*ratio);
                 toTrade = Math.min(toTrade,remainder);
                 t.setFilledVolume(t.getFilledVolume()+toTrade);
                 t.setRemainingVolume(t.getRemainingVolume()-toTrade);
-                System.out.println("PARTIAL FILL");
+                System.out.println("   PARTIAL FILL: ("+ side + " " +t.getFilledVolume()+") "+ t);
                 remainder = remainder - toTrade;
+                UserManager.getInstance().updateTradable(t.getID(), t.makeTradableDTO());
             }
         }
     }
@@ -129,8 +136,16 @@ public class ProductBookSide {
     @Override
     public String toString() {
         if (this.bookEntries.isEmpty()){
-            return "<Empty>";
+            return "   <Empty>";
         }
-        return bookEntries.toString();
+
+        StringBuilder finalStr = new StringBuilder();
+        for (Map.Entry<Price, ArrayList<Tradable>> entry : bookEntries.entrySet()) {
+            finalStr.append("   ").append(entry.getKey()).append(":\n");
+            for (Tradable item : entry.getValue()) {
+                finalStr.append("        ").append(item).append("\n");
+            }
+        }
+        return finalStr.toString();
     }
 }

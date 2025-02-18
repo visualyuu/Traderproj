@@ -11,7 +11,7 @@ import java.util.HashMap;
 public final class ProductManager {
     //is a singleton
     private static ProductManager instance;
-    public HashMap<String,ProductBook> pbList;
+    public HashMap<String,ProductBook> pbList = new HashMap<>();
 
     public static ProductManager getInstance(){
         if (instance == null){
@@ -54,25 +54,53 @@ public final class ProductManager {
         }
         String symbol = o.getProduct();
         pbList.get(symbol).add(o);
-        TradableDTO dto = o.makeTradableDTO()
+        TradableDTO dto = o.makeTradableDTO();
         UserManager.getInstance().updateTradable(o.getID(), dto);
         return dto;
     }
 
-    public TradableDTO[] addQuote(Quote q){
-
+    public TradableDTO[] addQuote(Quote q) throws DataValidationException, InvalidStringException, InvalidPriceException, InvalidTradableException {
+        if( q == null){
+            throw new DataValidationException("Null quote");
+        }
+        String symbol = q.getSymbol();
+        ProductBook pb = pbList.get(symbol);
+        pb.removeQuotesForUser(q.getUser());
+        TradableDTO buyDto = addTradable(q.getQuoteSide(BookSide.BUY));
+        TradableDTO sellDto = addTradable(q.getQuoteSide(BookSide.SELL));
+        return new TradableDTO[] {buyDto,sellDto};
     }
 
-    public TradableDTO cancel(TradableDTO o){
-
+    public TradableDTO cancel(TradableDTO o) throws InvalidStringException, DataValidationException {
+        if( o == null){
+            throw new DataValidationException("Null DTO");
+        }
+        ProductBook pb = pbList.get(o.product());
+        TradableDTO endDto = pb.cancel(o.side(),o.tradableId());
+        if (endDto == null){
+            System.out.println("Tradable failed to cancel");
+            return null;
+        }
+        return endDto;
     }
 
-    public TradableDTO[] cancelQuote(String symbol, String user){
+    public TradableDTO[] cancelQuote(String symbol, String user) throws InvalidStringException, DataValidationException {
+        if( symbol == null || user == null){
+            throw new DataValidationException("Null field(s)");
+        }
+        if(!pbList.containsKey(symbol)){
+            throw new DataValidationException("Product with symbol does not exist");
+        }
+        ProductBook pb = pbList.get(symbol);
+        return pb.removeQuotesForUser(user);
 
     }
 
     @Override
-    public String toString(){
-
+    public String toString() {
+        //update
+        return "ProductManager{" +
+                "pbList=" + pbList +
+                '}';
     }
 }

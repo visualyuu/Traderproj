@@ -1,12 +1,18 @@
 package userclasses;
 
 import exceptions.InvalidStringException;
+import price.Price;
 import regex.RegexStrings;
+import trading.Tradable;
 import trading.TradableDTO;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 
- class User {
+public class User {
      //package visible
     private String userId;
     private HashMap<String, TradableDTO> tradables;
@@ -21,7 +27,7 @@ import java.util.HashMap;
         this.userId = RegexStrings.userTest(userId);
     }
 
-    public void updateTradable (TradableDTO o){
+    public void updateTradable(TradableDTO o){
         if (o == null) {
             return;
         }
@@ -31,9 +37,11 @@ import java.util.HashMap;
     @Override
     public String toString() {
         //fix this
-        return "User{" +
-                "userId='" + userId + '\'' +
-                ", tradables=" + tradables +
-                '}';
+        StringBuilder finalStr = new StringBuilder();
+        finalStr.append("User Id: ").append(userId).append("\n");
+        for(Map.Entry<String, TradableDTO> entry: tradables.entrySet()){
+            finalStr.append(entry.getValue().toString());
+        }
+        return finalStr.toString();
     }
 }

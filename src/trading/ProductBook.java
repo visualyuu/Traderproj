@@ -25,7 +25,7 @@ public class ProductBook {
     }
 
 
-    public TradableDTO add(Tradable t) throws InvalidTradableException, InvalidPriceException {
+    public TradableDTO add(Tradable t) throws InvalidTradableException, InvalidPriceException, DataValidationException {
         System.out.println("**ADD " + t +"\n");
         if(t== null){
             throw new InvalidTradableException("Cannot have a null tradable");
@@ -40,7 +40,7 @@ public class ProductBook {
         return dto;
     }
 
-    public TradableDTO[] add(Quote qte) throws InvalidQuoteException, InvalidPriceException, InvalidStringException {
+    public TradableDTO[] add(Quote qte) throws InvalidQuoteException, InvalidPriceException, InvalidStringException, DataValidationException {
         if(qte ==  null){
             throw new InvalidQuoteException("Quote cannot be null");
         }
@@ -53,7 +53,7 @@ public class ProductBook {
         return new TradableDTO[]{dtoBuy,dtoSell};
     }
 
-    public TradableDTO cancel(BookSide side, String orderId) throws InvalidStringException {
+    public TradableDTO cancel(BookSide side, String orderId) throws InvalidStringException, DataValidationException {
         if (orderId ==  null){
             throw new InvalidStringException("Order Id cannot be empty");
         }
@@ -64,7 +64,7 @@ public class ProductBook {
         }
     }
 
-    public TradableDTO[] removeQuotesForUser(String userName) throws InvalidStringException {
+    public TradableDTO[] removeQuotesForUser(String userName) throws InvalidStringException, DataValidationException {
         if (userName ==  null){
             throw new InvalidStringException("User name cannot be empty");
         }
@@ -73,7 +73,7 @@ public class ProductBook {
         return new TradableDTO[]{dtoBuy,dtoSell};
     }
 
-    public void tryTrade() throws InvalidPriceException {
+    public void tryTrade() throws InvalidPriceException, DataValidationException {
         Price pBuy = buySide.topOfBookPrice();
         Price pSell = sellSide.topOfBookPrice();
         if(pSell == null || pBuy == null){
