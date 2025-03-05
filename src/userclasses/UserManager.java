@@ -3,6 +3,7 @@ package userclasses;
 import exceptions.DataValidationException;
 import exceptions.InvalidStringException;
 import trading.TradableDTO;
+import exceptions.*;
 
 import java.util.Map;
 import java.util.TreeMap;
@@ -50,8 +51,11 @@ public final class UserManager {
         userList.get(o.user()).updateTradable(o);
     }
 
-    public User getUser(String userId){
+    public User getUser(String userId) throws InvalidUserException {
         //remember the exception if user does not exist
+        if (!userList.containsKey(userId)){
+            throw new InvalidUserException("User does not exist");
+        }
         return userList.get(userId);
     }
 
