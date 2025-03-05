@@ -108,12 +108,9 @@ public class ProductBook {
     }
 
     private void updateMarket(){
-        Price topBuy = buySide.topOfBookPrice();
-        Price topSell = sellSide.topOfBookPrice();
-
         CurrentMarketTracker.getInstance().updateMarket(product,
-                topBuy, buySide.topOfBookVolume(),
-                topSell, buySide.topOfBookVolume());
+                buySide.topOfBookPrice(), buySide.topOfBookVolume(),
+                sellSide.topOfBookPrice(), sellSide.topOfBookVolume());
     }
 
     public String getTopOfBookString(BookSide side) {

@@ -20,11 +20,16 @@ public class CurrentMarketTracker {
         CurrentMarketSide buy;
         CurrentMarketSide sell;
 
+        if (sellPrice == null&&buyPrice ==null) {
+            buy = new CurrentMarketSide(new Price(0), buyVolume);
+            sell = new CurrentMarketSide(new Price(0), sellVolume);
+            marketWidth = 0;
 
-        if (buyPrice == null) {
+        }else if (buyPrice == null) {
             buy = new CurrentMarketSide(new Price(0), buyVolume);
              sell = new CurrentMarketSide(sellPrice, sellVolume);
             marketWidth = 0;
+
         } else if (sellPrice == null) {
             buy = new CurrentMarketSide(buyPrice, buyVolume);
             sell = new CurrentMarketSide(new Price(0), sellVolume);

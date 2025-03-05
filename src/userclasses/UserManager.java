@@ -51,6 +51,7 @@ public final class UserManager {
     }
 
     public User getUser(String userId){
+        //remember the exception if user does not exist
         return userList.get(userId);
     }
 

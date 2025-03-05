@@ -44,13 +44,18 @@ public class User implements CurrentMarketObserver {
         CurrentMarketSide[] retval = new CurrentMarketSide[2];
         retval[0] = buySide;
         retval[1] = sellSide;
-        currentMarkets.put(userId,retval);
+        currentMarkets.put(symbol,retval);
     }
 
     public String getCurrentMarkets(){
         StringBuilder end = new StringBuilder();
-        for (CurrentMarketSide m : currentMarkets.get(userId)){
-            end.append(m).append("\n");
+        for (String k : currentMarkets.keySet()){
+            CurrentMarketSide [] retval = currentMarkets.get(k);
+
+            CurrentMarketSide buy =retval[0];
+            CurrentMarketSide sell =retval[1];
+
+            end.append(k + "    "+buy +"  -  "+ sell).append("\n");
         }
         return end.toString();
     }
