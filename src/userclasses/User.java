@@ -1,6 +1,9 @@
 package userclasses;
 
 import exceptions.InvalidStringException;
+import markets.CurrentMarketObserver;
+import markets.CurrentMarketPublisher;
+import markets.CurrentMarketSide;
 import price.Price;
 import regex.RegexStrings;
 import trading.Tradable;
@@ -12,11 +15,13 @@ import java.util.Map;
 import java.util.TreeMap;
 
 
-public class User {
+public class User implements CurrentMarketObserver {
      //package visible
     private String userId;
     private HashMap<String, TradableDTO> tradables;
     //id, tradabledto
+
+    private HashMap<String, CurrentMarketSide[]> currentMarkets;
 
     public User(String userId) throws InvalidStringException {
         setUserId(userId);
@@ -35,6 +40,26 @@ public class User {
     }
 
     @Override
+    public void updateCurrentMarket(String symbol, CurrentMarketSide buySide, CurrentMarketSide sellSide) {
+        CurrentMarketSide[] retval = new CurrentMarketSide[2];
+        retval[0] = buySide;
+        retval[1] = sellSide;
+        currentMarkets.put(symbol,retval);
+    }
+
+    public String getCurrentMarkets(){
+        StringBuilder end = new StringBuilder();
+        for (CurrentMarketSide m : currentMarkets.get(userId)){
+            end.append(m.toString()).append("\n");
+        }
+        return end.toString();
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    @Override
     public String toString() {
         //fix this
         StringBuilder finalStr = new StringBuilder();
@@ -44,4 +69,6 @@ public class User {
         }
         return finalStr.toString();
     }
+
+
 }

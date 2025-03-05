@@ -50,6 +50,10 @@ public final class UserManager {
         userList.get(o.user()).updateTradable(o);
     }
 
+    public User getUser(String userId){
+        return userList.get(userId);
+    }
+
     @Override
     public String toString() {
         //update, loop through User.toString s and append to StringBuilder

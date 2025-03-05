@@ -1,6 +1,7 @@
 package trading;
 
 import exceptions.*;
+import markets.CurrentMarketTracker;
 import price.Price;
 import regex.RegexStrings;
 
@@ -37,6 +38,7 @@ public class ProductBook {
             dto = buySide.add(t);
         }
         tryTrade();
+        updateMarket();
         return dto;
     }
 
@@ -58,9 +60,13 @@ public class ProductBook {
             throw new InvalidStringException("Order Id cannot be empty");
         }
         if(side ==  BookSide.BUY){
-            return buySide.cancel(orderId);
+            TradableDTO cancel = buySide.cancel(orderId);
+            updateMarket();
+            return cancel;
         }else{
-            return sellSide.cancel(orderId);
+            TradableDTO cancel = sellSide.cancel(orderId);
+            updateMarket();
+            return cancel;
         }
     }
 
@@ -70,6 +76,7 @@ public class ProductBook {
         }
         TradableDTO dtoBuy = buySide.removeQuotesForUser(userName);
         TradableDTO dtoSell = sellSide.removeQuotesForUser(userName);
+        updateMarket();
         return new TradableDTO[]{dtoBuy,dtoSell};
     }
 
@@ -100,6 +107,15 @@ public class ProductBook {
 
     }
 
+    private void updateMarket(){
+        Price topBuy = buySide.topOfBookPrice();
+        Price topSell = sellSide.topOfBookPrice();
+
+        CurrentMarketTracker.getInstance().updateMarket(product,
+                topBuy, buySide.topOfBookVolume(),
+                topSell, buySide.topOfBookVolume());
+    }
+
     public String getTopOfBookString(BookSide side) {
         if (side.equals(BookSide.BUY)) {
             if (buySide.topOfBookPrice() == null) {
@@ -113,6 +129,7 @@ public class ProductBook {
             return "Top of SELL book: " + sellSide.topOfBookPrice() + " x " + sellSide.topOfBookVolume();
         }
     }
+
 
         @Override
         public String toString () {
