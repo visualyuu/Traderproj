@@ -7,28 +7,40 @@ public class CurrentMarketTracker {
     //singleton
     public static CurrentMarketTracker instance;
 
-    public static CurrentMarketTracker getInstance(){
-        if (instance == null){
+    public static CurrentMarketTracker getInstance() {
+        if (instance == null) {
             instance = new CurrentMarketTracker();
         }
         return instance;
     }
 
     //singleton
-    public void updateMarket(String symbol, Price buyPrice, int buyVolume, Price sellPrice, int sellVolume){
+    public void updateMarket(String symbol, Price buyPrice, int buyVolume, Price sellPrice, int sellVolume) {
         int marketWidth;
-        if(buyPrice.equals(0) || sellPrice.equals(0)){
+        CurrentMarketSide buy;
+        CurrentMarketSide sell;
+
+
+        if (buyPrice == null) {
+            buy = new CurrentMarketSide(new Price(0), buyVolume);
+             sell = new CurrentMarketSide(sellPrice, sellVolume);
             marketWidth = 0;
-        }else {
+        } else if (sellPrice == null) {
+            buy = new CurrentMarketSide(buyPrice, buyVolume);
+            sell = new CurrentMarketSide(new Price(0), sellVolume);
+            marketWidth = 0;
+
+        } else {
+            buy = new CurrentMarketSide(buyPrice, buyVolume);
+            sell = new CurrentMarketSide(sellPrice, sellVolume);
             marketWidth = sellPrice.compareTo(buyPrice);
+
         }
-        CurrentMarketSide buy =  new CurrentMarketSide(buyPrice,buyVolume);
-        CurrentMarketSide sell = new CurrentMarketSide(sellPrice,sellVolume);
         System.out.println(
                 "*********** Current Market ************\n" +
-                       symbol + buy+" - "+ sell + "["+marketWidth+"]"+"\n" +
+                        symbol + " " + buy + " - " + sell + " [" + new Price(marketWidth) + "]" + "\n" +
                         "**************************************\n"
         );
-        CurrentMarketPublisher.getInstance().acceptCurrentMarket(symbol,buy,sell);
+        CurrentMarketPublisher.getInstance().acceptCurrentMarket(symbol, buy, sell);
     }
 }

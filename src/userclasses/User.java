@@ -21,7 +21,7 @@ public class User implements CurrentMarketObserver {
     private HashMap<String, TradableDTO> tradables;
     //id, tradabledto
 
-    private HashMap<String, CurrentMarketSide[]> currentMarkets;
+    private HashMap<String, CurrentMarketSide[]> currentMarkets = new HashMap<>();
 
     public User(String userId) throws InvalidStringException {
         setUserId(userId);
@@ -44,13 +44,13 @@ public class User implements CurrentMarketObserver {
         CurrentMarketSide[] retval = new CurrentMarketSide[2];
         retval[0] = buySide;
         retval[1] = sellSide;
-        currentMarkets.put(symbol,retval);
+        currentMarkets.put(userId,retval);
     }
 
     public String getCurrentMarkets(){
         StringBuilder end = new StringBuilder();
         for (CurrentMarketSide m : currentMarkets.get(userId)){
-            end.append(m.toString()).append("\n");
+            end.append(m).append("\n");
         }
         return end.toString();
     }
