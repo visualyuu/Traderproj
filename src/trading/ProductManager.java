@@ -2,8 +2,10 @@ package trading;
 
 
 import exceptions.*;
+import userclasses.User;
 import userclasses.UserManager;
 
+import java.util.Map;
 import java.util.Random;
 import java.util.random.*;
 import java.util.HashMap;
@@ -98,9 +100,11 @@ public final class ProductManager {
 
     @Override
     public String toString() {
-        //update
-        return "ProductManager{" +
-                "pbList=" + pbList +
-                '}';
+        StringBuilder ending = new StringBuilder();
+        for(Map.Entry<String, ProductBook> entry: pbList.entrySet()){
+            ending.append(entry.getValue().toString()).append("\n");
+        }
+
+        return ending.toString();
     }
 }

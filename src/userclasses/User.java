@@ -66,7 +66,6 @@ public class User implements CurrentMarketObserver {
 
     @Override
     public String toString() {
-        //fix this
         StringBuilder finalStr = new StringBuilder();
         finalStr.append("User Id: ").append(userId).append("\n");
         for(Map.Entry<String, TradableDTO> entry: tradables.entrySet()){
