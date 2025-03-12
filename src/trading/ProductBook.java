@@ -131,10 +131,12 @@ public class ProductBook {
 
         @Override
         public String toString () {
-            return "Product:" + product + '\n' +
+            return  "--------------------------------------------\n"+
+                    "Product:" + product + '\n' +
                     "Side: BUY" + "\n" + buySide.toString() + '\n' +
                     "Side: SELL " + "\n" +
-                    sellSide.toString();
+                    sellSide.toString()+
+                    "\n--------------------------------------------\n";
         }
 
 }

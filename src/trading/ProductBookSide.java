@@ -114,7 +114,7 @@ public class ProductBookSide {
                 int rv = t.getRemainingVolume();
                 t.setFilledVolume(t.getOriginalVolume());
                 t.setRemainingVolume(0);
-                System.out.println("   FULL FILL: ("+ side + " " +t.getFilledVolume()+") "+ t);
+                System.out.println("   FULL FILL: ("+ side + " " +rv+") "+ t);
                 UserManager.getInstance().updateTradable(t.getID(), t.makeTradableDTO());
             }
             bookEntries.remove(top);
