@@ -16,7 +16,6 @@ import java.util.TreeMap;
 
 
 public class User implements CurrentMarketObserver {
-     //package visible
     private String userId;
     private HashMap<String, TradableDTO> tradables;
     //id, tradabledto
