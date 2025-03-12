@@ -121,7 +121,7 @@ public class ProductBookSide {
         }else{
             int remainder =  vol;
             for(Tradable t : list){
-                double ratio = (double) t.getRemainingVolume() / vol;
+                double ratio = (double) t.getRemainingVolume() / sum;
                 int toTrade = (int) Math.ceil(vol*ratio);
                 toTrade = Math.min(toTrade,remainder);
                 t.setFilledVolume(t.getFilledVolume()+toTrade);

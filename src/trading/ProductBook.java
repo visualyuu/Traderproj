@@ -33,11 +33,12 @@ public class ProductBook {
         }
         TradableDTO dto;
         if(t.getSide().equals(BookSide.SELL)) {
-            dto = sellSide.add(t);
+            sellSide.add(t);
         }else{
-            dto = buySide.add(t);
+            buySide.add(t);
         }
         tryTrade();
+        dto = t.makeTradableDTO(); //changed place of dto return
         updateMarket();
         return dto;
     }

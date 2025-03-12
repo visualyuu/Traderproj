@@ -70,7 +70,7 @@ public class User implements CurrentMarketObserver {
         StringBuilder finalStr = new StringBuilder();
         finalStr.append("User Id: ").append(userId).append("\n");
         for(Map.Entry<String, TradableDTO> entry: tradables.entrySet()){
-            finalStr.append(entry.getValue().toString());
+            finalStr.append(entry.getValue().toString()).append("\n");
         }
         return finalStr.toString();
     }
